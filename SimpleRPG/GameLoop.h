@@ -24,6 +24,6 @@ private:
     Display console_display;
     std::vector<GameObject> EnemySlot;
     std::vector<GameObject> PlayerSlot;
-    GameObject* selectEnemyReference;
-    GameObject* selectPlayerReference;
+    GameObject* selectedEnemyReference;
+    GameObject* selectedPlayerReference;
 };

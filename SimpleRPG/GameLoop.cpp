@@ -10,8 +10,8 @@ GameLoop::GameLoop()
     EnemySlot = std::vector<GameObject>();
     PlayerSlot = std::vector<GameObject>();
 
-    selectPlayerReference = nullptr;
-    selectEnemyReference = nullptr;
+    selectedPlayerReference = nullptr;
+    selectedEnemyReference = nullptr;
 
     GameObject* test_1 = (GameObject*)malloc(sizeof(GameObject));
     GameObject* test_2 = (GameObject*)malloc(sizeof(GameObject));
@@ -102,9 +102,9 @@ void GameLoop::BattleScene()
         if (GetAsyncKeyState(0x43))
         {
             if (enemySelected && playerSelected) {
-                selectPlayerReference->Attack(*selectEnemyReference);
-                console_display.DisplayStateAtXY(selectEnemyReference->x_position + 1, selectEnemyReference->y_position, *selectEnemyReference);
-                console_display.DisplayStateAtXY(selectPlayerReference->x_position + 1, selectPlayerReference->y_position, *selectPlayerReference);
+                selectedPlayerReference->Attack(*selectedEnemyReference);
+                console_display.DisplayStateAtXY(selectedEnemyReference->x_position + 1, selectedEnemyReference->y_position, *selectedEnemyReference);
+                console_display.DisplayStateAtXY(selectedPlayerReference->x_position + 1, selectedPlayerReference->y_position, *selectedPlayerReference);
                 enemySelected = false;
                 playerSelected = false;
             }
@@ -116,53 +116,53 @@ void GameLoop::BattleScene()
 
 void GameLoop::SelectEnemy()
 {
-    selectEnemyReference = &EnemySlot[console_display.xIndex];
+    selectedEnemyReference = &EnemySlot[console_display.xIndex];
 
-    if (enemySelected && !selectEnemyReference->IsSame(*selectEnemyReference)) {
+    if (enemySelected && !selectedEnemyReference->IsSame(*selectedEnemyReference)) {
         return;
     }
-    if (selectEnemyReference->IfDead()) {
+    if (selectedEnemyReference->IfDead()) {
         return;
     }
 
-    selectEnemyReference->x_position = console_display.xPosition;
-    selectEnemyReference->y_position = console_display.yPosition;
+    selectedEnemyReference->x_position = console_display.xPosition;
+    selectedEnemyReference->y_position = console_display.yPosition;
     
     enemySelected = !enemySelected;
     if (enemySelected) {
         console_display.DisplayStateAtXY_Selected(console_display.xPosition + 1,
-            console_display.yPosition, *selectEnemyReference);
+            console_display.yPosition, *selectedEnemyReference);
     }
     else
     {
         console_display.DisplayStateAtXY(console_display.xPosition + 1,
-            console_display.yPosition, *selectEnemyReference);
+            console_display.yPosition, *selectedEnemyReference);
     }
 
 }
 
 void GameLoop::SelectPlayer()
 {
-    selectPlayerReference = &PlayerSlot[console_display.xIndex];
+    selectedPlayerReference = &PlayerSlot[console_display.xIndex];
 
-    if (playerSelected && !selectPlayerReference->IsSame(*selectPlayerReference)) {
+    if (playerSelected && !selectedPlayerReference->IsSame(*selectedPlayerReference)) {
         return;
     }
-    if (selectPlayerReference->IfDead()) {
+    if (selectedPlayerReference->IfDead()) {
         return;
     }
-    selectPlayerReference->x_position = console_display.xPosition;
-    selectPlayerReference->y_position = console_display.yPosition;
+    selectedPlayerReference->x_position = console_display.xPosition;
+    selectedPlayerReference->y_position = console_display.yPosition;
 
     playerSelected = !playerSelected;
     if (playerSelected) {
         console_display.DisplayStateAtXY_Selected(console_display.xPosition + 1,
-            console_display.yPosition, *selectPlayerReference);
+            console_display.yPosition, *selectedPlayerReference);
     }
     else
     {
         console_display.DisplayStateAtXY(console_display.xPosition + 1,
-            console_display.yPosition, *selectPlayerReference);
+            console_display.yPosition, *selectedPlayerReference);
     }
 }
 
