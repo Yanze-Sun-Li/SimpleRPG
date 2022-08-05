@@ -23,6 +23,7 @@ public:
     void AwaitArea();
     void RepositionCursor();
     void Reposition();
+    void Clean();
     int xPosition;
     int yPosition;
     int xIndex;

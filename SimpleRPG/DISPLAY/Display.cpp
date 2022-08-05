@@ -132,6 +132,11 @@ void Display::Reposition()
 	}
 }
 
+void Display::Clean()
+{
+	system("cls");
+}
+
 void Display::ShowConsoleCursor(bool showFlag)
 {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);

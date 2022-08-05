@@ -2,7 +2,7 @@
 
 GameLoop::GameLoop()
 {
-
+    battleResult = -1;
     xGap = 35;
     yGap = 10;
     console_display = Display(xGap, yGap);
@@ -19,6 +19,7 @@ GameLoop::GameLoop()
     GameObject* test_4 = (GameObject*)malloc(sizeof(GameObject));
     GameObject* test_5 = (GameObject*)malloc(sizeof(GameObject));
     GameObject* test_6 = (GameObject*)malloc(sizeof(GameObject));
+
     
     test_1 = new GameObject("Test1");
     test_2 = new GameObject("Test2");
@@ -44,13 +45,26 @@ void GameLoop::Start()
 {
    
     BattleScene();
-
+    console_display.Clean();
+    switch (battleResult)
+    {
+    case -1:
+        std::cout << "Error"<<std::endl;
+    case 0:
+        std::cout << "Enemy have the victory!" << std::endl;
+    case 1:
+        std::cout << "Player have the victory!" << std::endl;
+    default:
+        break;
+    }
     int i;
     std::cin >> i;
 }
 
 void GameLoop::BattleScene()
 {
+    //Reseting the winning indicator
+    battleResult = -1;
     // First Game Scene start here:
     console_display.DisplayEnemy(EnemySlot);
     console_display.DisplayPlayer(PlayerSlot);
@@ -108,7 +122,17 @@ void GameLoop::BattleScene()
                 enemySelected = false;
                 playerSelected = false;
             }
-            Sleep(250);
+            
+            if (IfPlayerDead())
+            {
+                battleResult = 0;
+                break;
+            }
+            else if(IfEnemyDead())
+            {
+                battleResult = 1;
+                break;
+            }
         }
     }
 }
@@ -166,3 +190,20 @@ void GameLoop::SelectPlayer()
     }
 }
 
+bool GameLoop::IfEnemyDead() {
+    bool enemyDead = true;
+    for (GameObject ob : EnemySlot) 
+    {
+        enemyDead = ob.IfDead();
+    }
+    return enemyDead;
+}
+
+bool GameLoop::IfPlayerDead() {
+    bool playerDead = true;
+    for (GameObject ob : PlayerSlot)
+    {
+        playerDead = ob.IfDead();
+    }
+    return playerDead;
+}
