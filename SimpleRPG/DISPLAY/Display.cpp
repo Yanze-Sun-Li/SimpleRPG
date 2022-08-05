@@ -79,7 +79,7 @@ void Display::DisplayStateAtXY_Dead(int _x, int _y, GameObject& gameObject)
 	console_color.DarkGray("Dodge", gameObject.dodge);
 }
 
-void Display::DisplayEnemy(std::list<GameObject> EnemySlot)
+void Display::DisplayEnemy(std::vector<GameObject> EnemySlot)
 {
 	int i = 0;
 	for (GameObject object : EnemySlot)
@@ -90,7 +90,7 @@ void Display::DisplayEnemy(std::list<GameObject> EnemySlot)
 	}
 }
 
-void Display::DisplayPlayer(std::list<GameObject> PlayerSlot)
+void Display::DisplayPlayer(std::vector<GameObject> PlayerSlot)
 {
 	int i = 0;
 	for (GameObject object : PlayerSlot)

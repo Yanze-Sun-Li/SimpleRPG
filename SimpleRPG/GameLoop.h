@@ -1,7 +1,7 @@
 #pragma once
 #include "DATASTRUCTURE/GameObject.h"
 #include "DISPLAY/Display.h"
-#include <list>
+#include <vector>
 #include <queue>
 #include <Windows.h>
 
@@ -14,7 +14,6 @@ public:
     /*void SelectGameObject();*/
     void SelectEnemy();
     void SelectPlayer();
-    GameObject* IndexOf(std::list<GameObject>,int _index);
 
 private:
     bool readToAttack;
@@ -23,8 +22,8 @@ private:
     int xGap;
     int yGap;
     Display console_display;
-    std::list<GameObject> EnemySlot;
-    std::list<GameObject> PlayerSlot;
+    std::vector<GameObject> EnemySlot;
+    std::vector<GameObject> PlayerSlot;
     GameObject* selectEnemyReference;
     GameObject* selectPlayerReference;
 };

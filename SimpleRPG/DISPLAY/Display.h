@@ -1,6 +1,6 @@
 #pragma once
 #include "../CONSOLE_CONTROL/ConsoleControl.h"
-#include <list>
+#include <vector>
 #include "../DATASTRUCTURE/GameObject.h"
 
 class Display
@@ -18,8 +18,8 @@ public:
     void DisplayStateAtXY(int _x, int _y, GameObject &gameObject);
     void DisplayStateAtXY_Selected(int _x, int _y, GameObject &gameObject);
     void DisplayStateAtXY_Dead(int _x, int _y, GameObject& gameObject);
-    void DisplayEnemy(std::list<GameObject> EnemySlot);
-    void DisplayPlayer(std::list<GameObject> PlayerSlot);
+    void DisplayEnemy(std::vector<GameObject> EnemySlot);
+    void DisplayPlayer(std::vector<GameObject> PlayerSlot);
     void AwaitArea();
     void RepositionCursor();
     void Reposition();

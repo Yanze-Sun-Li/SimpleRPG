@@ -7,8 +7,8 @@ GameLoop::GameLoop()
     yGap = 10;
     console_display = Display(xGap, yGap);
 
-    EnemySlot = std::list<GameObject>();
-    PlayerSlot = std::list<GameObject>();
+    EnemySlot = std::vector<GameObject>();
+    PlayerSlot = std::vector<GameObject>();
 
     selectPlayerReference = nullptr;
     selectEnemyReference = nullptr;
@@ -116,7 +116,7 @@ void GameLoop::BattleScene()
 
 void GameLoop::SelectEnemy()
 {
-    selectEnemyReference = IndexOf(EnemySlot, console_display.xIndex);
+    selectEnemyReference = &EnemySlot[console_display.xIndex];
 
     if (enemySelected && !selectEnemyReference->IsSame(*selectEnemyReference)) {
         return;
@@ -143,7 +143,7 @@ void GameLoop::SelectEnemy()
 
 void GameLoop::SelectPlayer()
 {
-    selectPlayerReference = IndexOf(PlayerSlot, console_display.xIndex);
+    selectPlayerReference = &PlayerSlot[console_display.xIndex];
 
     if (playerSelected && !selectPlayerReference->IsSame(*selectPlayerReference)) {
         return;
@@ -166,14 +166,3 @@ void GameLoop::SelectPlayer()
     }
 }
 
-GameObject* GameLoop :: IndexOf(std::list<GameObject> targetList,int _index) {
-    
-    // Create iterator pointing to first element
-    std::list<GameObject>::iterator it = targetList.begin();
-    
-    // Advance the iterator by 2 positions,
-    std::advance(it, _index);
-
-    return &(*it);
-
-}
