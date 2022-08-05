@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include <Windows.h>
+#include "FUNCTION/Random.h"
 
 class GameLoop
 {
@@ -21,6 +22,9 @@ public:
 
 
 private:
+    int playerAttackChance = -1;
+    int enemyAttackChance = -1;
+    Random rand;
     int battleResult;
     bool readToAttack;
     bool playerSelected;
@@ -30,8 +34,18 @@ private:
     Display console_display;
     std::vector<GameObject> EnemySlot;
     std::vector<GameObject> PlayerSlot;
+    std::vector<GameObject> DeadEnemySlot;
+    std::vector<GameObject> DeadPlayerSlot;
     GameObject* selectedEnemyReference;
     GameObject* selectedPlayerReference;
     bool IfEnemyDead();
     bool IfPlayerDead();
+    bool PlayerRound();
+    bool EnemyRound();
+    int PlayerAliveNumber();
+    int EnemyAliveNumber();
+    void RemoveDeadEnemy();
+    void RemoveDeadPlayer();
+    void GameEnd();
+
 };

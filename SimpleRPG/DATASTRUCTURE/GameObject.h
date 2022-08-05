@@ -45,4 +45,6 @@ public:
     void FullDescription(ColorControl console_color);
     bool IsEmpty();
     bool IsSame(GameObject& _gameObject);
+    friend bool operator==(const GameObject& left, const GameObject& right);
+
 };

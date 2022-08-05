@@ -24,12 +24,14 @@
     <ClCompile Include="DISPLAY\Display.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="FUNCTION\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CONSOLE_CONTROL\ConsoleControl.h" />
     <ClInclude Include="DATASTRUCTURE\GameObject.h" />
     <ClInclude Include="DISPLAY\Display.h" />
     <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="FUNCTION\Random.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

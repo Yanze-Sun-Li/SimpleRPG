@@ -106,8 +106,11 @@ void Display::AwaitArea()
 	console_control.CursorXY(xPosition, yPosition);
 	console_color.White("Arrow Key to move, Space to select/de-select. C to confirm attack");
 	console_control.CursorXY(xPosition, yPosition + 1);
-	console_color.Yellow("Select your unit first, then select an enemy to attack.");
+	console_color.White("C to confirm attack");
 	console_control.CursorXY(xPosition, yPosition + 2);
+	console_color.Yellow("Select your unit first, then select an enemy to attack.");
+	console_control.CursorXY(xPosition, yPosition + 3);
+	console_color.Green("The amount of attack chances for each round increase based on how many member in the team.");
 }
 
 void Display::RepositionCursor()

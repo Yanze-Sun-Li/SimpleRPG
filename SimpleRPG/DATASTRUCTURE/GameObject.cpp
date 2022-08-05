@@ -106,3 +106,13 @@ bool GameObject::IsSame(GameObject& _gameObject)
         defend == _gameObject.defend &&
         dodge == _gameObject.dodge ? true : false;
 }
+
+bool operator==(const GameObject& left, const GameObject& right)
+{
+    return left.name == right.name &&
+        left.description == right.description &&
+        left.health == right.health &&
+        left.attack == right.attack &&
+        left.defend == right.defend &&
+        left.dodge == right.dodge ? true : false;
+}
