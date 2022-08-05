@@ -140,6 +140,7 @@ void GameLoop::BattleScene()
 
 void GameLoop::SelectEnemy()
 {
+    if (EnemySlot.empty()) { return; }
     selectedEnemyReference = &EnemySlot[console_display.xIndex];
 
     if (enemySelected && !selectedEnemyReference->IsSame(*selectedEnemyReference)) {
@@ -167,6 +168,7 @@ void GameLoop::SelectEnemy()
 
 void GameLoop::SelectPlayer()
 {
+    if (PlayerSlot.empty()) { return; }
     selectedPlayerReference = &PlayerSlot[console_display.xIndex];
 
     if (playerSelected && !selectedPlayerReference->IsSame(*selectedPlayerReference)) {
