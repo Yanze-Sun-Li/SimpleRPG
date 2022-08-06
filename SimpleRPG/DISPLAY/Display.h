@@ -18,8 +18,9 @@ public:
     void DisplayStateAtXY(int _x, int _y, GameObject &gameObject);
     void DisplayStateAtXY_Selected(int _x, int _y, GameObject &gameObject);
     void DisplayStateAtXY_Dead(int _x, int _y, GameObject& gameObject);
-    void DisplayEnemy(std::vector<GameObject> EnemySlot);
-    void DisplayPlayer(std::vector<GameObject> PlayerSlot);
+    void DisplayEnemy(std::vector<GameObject*> EnemySlot);
+    void DisplayPlayer(std::vector<GameObject*> PlayerSlot);
+    void Re_DisplayAll(std::vector<GameObject*> PlayerSlot, std::vector<GameObject*> EnemySlot);
     void AwaitArea();
     void RepositionCursor();
     void Reposition();

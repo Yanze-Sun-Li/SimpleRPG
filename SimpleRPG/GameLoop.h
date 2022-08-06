@@ -32,10 +32,10 @@ private:
     int xGap;
     int yGap;
     Display console_display;
-    std::vector<GameObject> EnemySlot;
-    std::vector<GameObject> PlayerSlot;
-    std::vector<GameObject> DeadEnemySlot;
-    std::vector<GameObject> DeadPlayerSlot;
+    std::vector<GameObject*> EnemySlot;
+    std::vector<GameObject*> PlayerSlot;
+    std::vector<GameObject*> DeadEnemySlot;
+    std::vector<GameObject*> DeadPlayerSlot;
     GameObject* selectedEnemyReference;
     GameObject* selectedPlayerReference;
     bool IfEnemyDead();

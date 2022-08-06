@@ -8,9 +8,9 @@ GameLoop::GameLoop()
     yGap = 10;
     console_display = Display(xGap, yGap);
 
-    EnemySlot = std::vector<GameObject>();
-    PlayerSlot = std::vector<GameObject>();
-    DeadEnemySlot = std::vector<GameObject>();
+    EnemySlot = std::vector<GameObject*>();
+    PlayerSlot = std::vector<GameObject*>();
+    DeadEnemySlot = std::vector<GameObject*>();
 
     selectedPlayerReference = nullptr;
     selectedEnemyReference = nullptr;
@@ -30,12 +30,12 @@ GameLoop::GameLoop()
     test_5 = new GameObject("Test5");
     //test_6 = new GameObject("Test6");
 
-    EnemySlot.push_back(*test_1);
-    EnemySlot.push_back(*test_2);
-    EnemySlot.push_back(*test_3);
+    EnemySlot.push_back(test_1);
+    EnemySlot.push_back(test_2);
+    EnemySlot.push_back(test_3);
 
-    PlayerSlot.push_back(*test_4);
-    PlayerSlot.push_back(*test_5);
+    PlayerSlot.push_back(test_4);
+    PlayerSlot.push_back(test_5);
     //PlayerSlot.push_back(*test_6);
 
 
@@ -78,7 +78,9 @@ void GameLoop::BattleScene()
         if (PlayerRound()) {
             break;
         }
+        
         RemoveDeadEnemy();
+        console_display.Re_DisplayAll(PlayerSlot, EnemySlot);
     }
 
     GameEnd();
@@ -90,7 +92,7 @@ void GameLoop::BattleScene()
 void GameLoop::SelectEnemy()
 {
     if (EnemySlot.empty()) { return; }
-    selectedEnemyReference = &EnemySlot[console_display.xIndex];
+    selectedEnemyReference = EnemySlot[console_display.xIndex];
 
     if (enemySelected && !selectedEnemyReference->IsSame(*selectedEnemyReference)) {
         return;
@@ -118,7 +120,7 @@ void GameLoop::SelectEnemy()
 void GameLoop::SelectPlayer()
 {
     if (PlayerSlot.empty()) { return; }
-    selectedPlayerReference = &PlayerSlot[console_display.xIndex];
+    selectedPlayerReference = PlayerSlot[console_display.xIndex];
 
     if (playerSelected && !selectedPlayerReference->IsSame(*selectedPlayerReference)) {
         return;
@@ -143,18 +145,21 @@ void GameLoop::SelectPlayer()
 
 bool GameLoop::IfEnemyDead() {
     bool enemyDead = true;
-    for (GameObject ob : EnemySlot) 
+    for (GameObject* ob : EnemySlot) 
     {
-        enemyDead = ob.IfDead();
+        if (!ob->IfDead()) {
+            enemyDead = false;
+        }
     }
     return enemyDead;
 }
 
 bool GameLoop::IfPlayerDead() {
     bool playerDead = true;
-    for (GameObject ob : PlayerSlot)
+    for (GameObject* ob : PlayerSlot)
     {
-        playerDead = ob.IfDead();
+        if (!ob->IfDead())
+            playerDead = false;
     }
     return playerDead;
 }
@@ -180,20 +185,44 @@ bool GameLoop::PlayerRound() {
             console_display.RepositionCursor();
             Sleep(250);
         }
-        if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex != 2)
+
+        if (console_display.yIndex == 0)
         {
-            console_display.xIndex += 1;
-            console_display.Reposition();
-            console_display.RepositionCursor();
-            Sleep(250);
+            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex < EnemySlot.size()-1)
+            {
+                console_display.xIndex += 1;
+                console_display.Reposition();
+                console_display.RepositionCursor();
+                Sleep(250);
+            }
+            if (GetAsyncKeyState(VK_LEFT) && console_display.xIndex != 0)
+            {
+                console_display.xIndex -= 1;
+                console_display.Reposition();
+                console_display.RepositionCursor();
+                Sleep(250);
+            }
         }
-        if (GetAsyncKeyState(VK_LEFT) && console_display.xIndex != 0)
+
+        if (console_display.yIndex == 1)
         {
-            console_display.xIndex -= 1;
-            console_display.Reposition();
-            console_display.RepositionCursor();
-            Sleep(250);
+            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < PlayerSlot.size()-1)
+            {
+                console_display.xIndex += 1;
+                console_display.Reposition();
+                console_display.RepositionCursor();
+                Sleep(250);
+            }
+            if (GetAsyncKeyState(VK_LEFT) && console_display.xIndex != 0)
+            {
+                console_display.xIndex -= 1;
+                console_display.Reposition();
+                console_display.RepositionCursor();
+                Sleep(250);
+            }
         }
+
+
         if (GetAsyncKeyState(VK_SPACE) && console_display.yIndex != 2)
         {
             switch (console_display.yIndex)
@@ -246,22 +275,62 @@ bool GameLoop::EnemyRound() {
 }
 
 void GameLoop::RemoveDeadEnemy() {
+    
+    int i= 0;
 
+    for (GameObject* ob : EnemySlot) {
+        //Give index
+        EnemySlot[i]->index = i;
+        //If dead, index decrease while delete this object
+        if (EnemySlot[i]->IfDead())
+        {
+            
+            EnemySlot.erase(EnemySlot.begin() + EnemySlot[i]->index);
+            i--;
+        }
+        //If not dead, increase. if dead, stay same.
+        i++;
+    }
 }
 
 void GameLoop::RemoveDeadPlayer() {
+    int i = 0;
 
+    for (GameObject* ob : PlayerSlot) {
+        //Give index
+        PlayerSlot[i]->index = i;
+        //If dead, index decrease while delete this object
+        if (PlayerSlot[i]->IfDead())
+        {
+
+            PlayerSlot.erase(PlayerSlot.begin() + PlayerSlot[i]->index);
+            i--;
+        }
+        //If not dead, increase. if dead, stay same.
+        i++;
+    }
 }
 
 void GameLoop::GameEnd()
 {
+    for (int i = 0; i < DeadEnemySlot.size(); i++)
+    {
+        free(DeadEnemySlot[i]);
+    }
+    for (int i = 0; i < DeadPlayerSlot.size(); i++)
+    {
+        free(DeadPlayerSlot[i]);
+
+        DeadEnemySlot.clear();
+        DeadPlayerSlot.clear();
+    }
 }
 
 int GameLoop::PlayerAliveNumber()
 {
     int alive = PlayerSlot.size();
-    for (GameObject ob : PlayerSlot) {
-        if (ob.IfDead()) {
+    for (GameObject* ob : PlayerSlot) {
+        if (ob->IfDead()) {
             alive -= 1;
         }
     }
@@ -271,8 +340,8 @@ int GameLoop::PlayerAliveNumber()
 int GameLoop::EnemyAliveNumber()
 {
     int alive = EnemySlot.size();
-    for (GameObject ob : EnemySlot) {
-        if (ob.IfDead()) {
+    for (GameObject* ob : EnemySlot) {
+        if (ob->IfDead()) {
             alive -= 1;
         }
     }

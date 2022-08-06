@@ -5,6 +5,7 @@
 class GameObject
 {
 public:
+    int index;
     int x_position;
     int y_position;
     std::string name;

@@ -79,26 +79,36 @@ void Display::DisplayStateAtXY_Dead(int _x, int _y, GameObject& gameObject)
 	console_color.DarkGray("Dodge", gameObject.dodge);
 }
 
-void Display::DisplayEnemy(std::vector<GameObject> EnemySlot)
+void Display::DisplayEnemy(std::vector<GameObject*> EnemySlot)
 {
 	int i = 0;
-	for (GameObject object : EnemySlot)
+	for (GameObject* object : EnemySlot)
 	{
-		if (!object.IfDead())
-			DisplayStateAtXY(10 + i * xGap, 1, object);
+		if (!object->IfDead())
+			DisplayStateAtXY(10 + i * xGap, 1, *object);
 		i++;
 	}
 }
 
-void Display::DisplayPlayer(std::vector<GameObject> PlayerSlot)
+void Display::DisplayPlayer(std::vector<GameObject*> PlayerSlot)
 {
 	int i = 0;
-	for (GameObject object : PlayerSlot)
+	for (GameObject* object : PlayerSlot)
 	{
-		if (!object.IfDead())
-			DisplayStateAtXY(10 + i * xGap, 1 + yGap, object);
+		if (!object->IfDead())
+			DisplayStateAtXY(10 + i * xGap, 1 + yGap, *object);
 		i++;
 	}
+}
+
+void Display::Re_DisplayAll(std::vector<GameObject*> PlayerSlot, std::vector<GameObject*> EnemySlot)
+{
+	Clean();
+	xPosition = 10;
+	yPosition = yGap + yGap;
+	DisplayEnemy(EnemySlot);
+	DisplayPlayer(PlayerSlot);
+	AwaitArea();
 }
 
 void Display::AwaitArea()
