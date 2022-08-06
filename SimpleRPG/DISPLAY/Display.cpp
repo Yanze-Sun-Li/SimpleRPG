@@ -2,6 +2,7 @@
 
 Display::Display(int _xGap, int _yGap)
 {
+	playerAttackChance = -1;
 	console_color = ColorControl();
 	console_control = ConsoleControl();
 	xGap = _xGap;
@@ -125,12 +126,19 @@ void Display::AwaitArea()
 	yIndex = 2;
 }
 
+void Display::DisplayAttackChance() {
+	xIndex = 0;
+	yIndex = 2;
+	console_control.CursorXY(xPosition, yPosition+4);
+	console_color.Yellow("Remain Attack Chance: ",playerAttackChance);
+}
+
 void Display::RepositionCursor()
 {
 	console_control.CursorXY(xPosition, yPosition);
 }
 
-void Display::Reposition()
+void Display::RepositionPosition()
 {
 	xPosition = 9 + xIndex * xGap;
 	switch (yIndex)

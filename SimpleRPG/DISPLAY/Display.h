@@ -22,13 +22,15 @@ public:
     void DisplayPlayer(std::vector<GameObject*> PlayerSlot);
     void Re_DisplayAll(std::vector<GameObject*> PlayerSlot, std::vector<GameObject*> EnemySlot);
     void AwaitArea();
+    void DisplayAttackChance();
     void RepositionCursor();
-    void Reposition();
+    void RepositionPosition();
     void Clean();
     int xPosition;
     int yPosition;
     int xIndex;
     int yIndex;
+    int playerAttackChance;
 
 private:
     void ShowConsoleCursor(bool showFlag);

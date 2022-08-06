@@ -23,8 +23,8 @@ GameObject::GameObject(std::string _name)
 {
     name = _name;
     description = "Test Object";
-    health = 1;
-    attack = 1;
+    health = 10;
+    attack = 5;
     defend = 1;
     dodge = 1;
 }

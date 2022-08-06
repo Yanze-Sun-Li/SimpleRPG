@@ -36,12 +36,13 @@ private:
     std::vector<GameObject*> PlayerSlot;
     std::vector<GameObject*> DeadEnemySlot;
     std::vector<GameObject*> DeadPlayerSlot;
+    std::vector<GameObject*> AlivePlayer;
     GameObject* selectedEnemyReference;
     GameObject* selectedPlayerReference;
-    bool IfEnemyDead();
-    bool IfPlayerDead();
-    bool PlayerRound();
-    bool EnemyRound();
+    bool IfEnemyAllDead();
+    bool IfPlayerAllDead();
+    void PlayerRound();
+    void EnemyRound();
     int PlayerAliveNumber();
     int EnemyAliveNumber();
     void RemoveDeadEnemy();

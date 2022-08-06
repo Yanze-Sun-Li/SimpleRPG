@@ -11,6 +11,8 @@ GameLoop::GameLoop()
     EnemySlot = std::vector<GameObject*>();
     PlayerSlot = std::vector<GameObject*>();
     DeadEnemySlot = std::vector<GameObject*>();
+    DeadPlayerSlot = std::vector<GameObject*>();
+    AlivePlayer = std::vector<GameObject*>();
 
     selectedPlayerReference = nullptr;
     selectedEnemyReference = nullptr;
@@ -52,13 +54,18 @@ void GameLoop::Start()
     {
     case -1:
         std::cout << "Error"<<std::endl;
+        break;
     case 0:
         std::cout << "Enemy have the victory!" << std::endl;
+        break;
     case 1:
         std::cout << "Player have the victory!" << std::endl;
     default:
         break;
     }
+
+    battleResult = -1;
+
     int i;
     std::cin >> i;
 }
@@ -70,15 +77,13 @@ void GameLoop::BattleScene()
     //Reseting the winning indicator
     battleResult = -1;
     // First Game Scene start here:
-    console_display.DisplayEnemy(EnemySlot);
-    console_display.DisplayPlayer(PlayerSlot);
-    console_display.AwaitArea();
+    console_display.Re_DisplayAll(PlayerSlot, EnemySlot);
+    console_display.playerAttackChance = playerAttackChance;
+    console_display.DisplayAttackChance();
 
-    while (true) {
-        if (PlayerRound()) {
-            break;
-        }
-        
+    while (battleResult ==-1) {
+        PlayerRound();
+        EnemyRound();
         RemoveDeadEnemy();
         console_display.Re_DisplayAll(PlayerSlot, EnemySlot);
     }
@@ -143,7 +148,7 @@ void GameLoop::SelectPlayer()
     }
 }
 
-bool GameLoop::IfEnemyDead() {
+bool GameLoop::IfEnemyAllDead() {
     bool enemyDead = true;
     for (GameObject* ob : EnemySlot) 
     {
@@ -154,7 +159,7 @@ bool GameLoop::IfEnemyDead() {
     return enemyDead;
 }
 
-bool GameLoop::IfPlayerDead() {
+bool GameLoop::IfPlayerAllDead() {
     bool playerDead = true;
     for (GameObject* ob : PlayerSlot)
     {
@@ -164,24 +169,28 @@ bool GameLoop::IfPlayerDead() {
     return playerDead;
 }
 
-bool GameLoop::PlayerRound() {
+void GameLoop::PlayerRound() {
+
+    std::cout << "Player round!";
 
     playerAttackChance = PlayerAliveNumber();
+    console_display.playerAttackChance = playerAttackChance;
+    console_display.DisplayAttackChance();
 
-    while (!GetAsyncKeyState(VK_ESCAPE))
+    while (!GetAsyncKeyState(VK_ESCAPE) && playerAttackChance > 0)
     {
 
         if (GetAsyncKeyState(VK_UP) && console_display.yIndex != 0 && console_display.xIndex + 1 <= EnemySlot.size())
         {
             console_display.yIndex -= 1;
-            console_display.Reposition();
+            console_display.RepositionPosition();
             console_display.RepositionCursor();
             Sleep(250);
         }
         if (GetAsyncKeyState(VK_DOWN) && console_display.yIndex != 1 && console_display.xIndex + 1 <= PlayerSlot.size())
         {
             console_display.yIndex += 1;
-            console_display.Reposition();
+            console_display.RepositionPosition();
             console_display.RepositionCursor();
             Sleep(250);
         }
@@ -191,14 +200,14 @@ bool GameLoop::PlayerRound() {
             if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < EnemySlot.size())
             {
                 console_display.xIndex += 1;
-                console_display.Reposition();
+                console_display.RepositionPosition();
                 console_display.RepositionCursor();
                 Sleep(250);
             }
             if (GetAsyncKeyState(VK_LEFT) && console_display.xIndex != 0)
             {
                 console_display.xIndex -= 1;
-                console_display.Reposition();
+                console_display.RepositionPosition();
                 console_display.RepositionCursor();
                 Sleep(250);
             }
@@ -209,14 +218,14 @@ bool GameLoop::PlayerRound() {
             if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < PlayerSlot.size())
             {
                 console_display.xIndex += 1;
-                console_display.Reposition();
+                console_display.RepositionPosition();
                 console_display.RepositionCursor();
                 Sleep(250);
             }
             if (GetAsyncKeyState(VK_LEFT) && console_display.xIndex != 0)
             {
                 console_display.xIndex -= 1;
-                console_display.Reposition();
+                console_display.RepositionPosition();
                 console_display.RepositionCursor();
                 Sleep(250);
             }
@@ -240,38 +249,56 @@ bool GameLoop::PlayerRound() {
         {
             if (enemySelected && playerSelected) {
                 playerAttackChance -= 1;
+                console_display.playerAttackChance = playerAttackChance;
                 selectedPlayerReference->Attack(*selectedEnemyReference);
-                console_display.DisplayStateAtXY(selectedEnemyReference->x_position + 1, selectedEnemyReference->y_position, *selectedEnemyReference);
-                console_display.DisplayStateAtXY(selectedPlayerReference->x_position + 1, selectedPlayerReference->y_position, *selectedPlayerReference);
+                console_display.Re_DisplayAll(PlayerSlot,EnemySlot);
+                console_display.DisplayAttackChance();
                 enemySelected = false;
                 playerSelected = false;
-                if (IfPlayerDead())
-                {
-                    battleResult = 0;
-                    return true;
-                }
-                else if (IfEnemyDead())
-                {
+                if (IfEnemyAllDead()) {
                     battleResult = 1;
-                    return true;
-                }
-                else if (playerAttackChance <= 0) {
-                    return false;
                 }
             }
         }
     }
 }
 
-bool GameLoop::EnemyRound() {
+void GameLoop::EnemyRound() 
+{
+    enemyAttackChance = EnemyAliveNumber();
+    for (GameObject* ob : EnemySlot)
+    {
+        if (IfPlayerAllDead())
+        {
+            battleResult = 0;
+            break;
+        }
+        if (PlayerSlot.empty())
+        {
+            break;
+        }
+        if (enemyAttackChance <= 0) {
+            enemyAttackChance = -1;
+            break;
+        }
 
-
-    //for (int i = 0; i < EnemyAliveNumber(); i++)
-    //{
-    //    
-    //}
-
-    return false;
+        if (!ob->IfDead())
+        {
+            AlivePlayer.clear();
+            for (GameObject* ob_p : PlayerSlot)
+            {
+                if (!ob_p->IfDead())
+                {
+                    AlivePlayer.push_back(ob_p);
+                }
+            }
+            ob->Attack(*AlivePlayer[rand.random(AlivePlayer.size())]);
+            console_display.Re_DisplayAll(PlayerSlot, EnemySlot);
+            enemyAttackChance--;
+            RemoveDeadPlayer();
+        }
+        
+    }
 }
 
 void GameLoop::RemoveDeadEnemy() {
