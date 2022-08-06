@@ -171,14 +171,14 @@ bool GameLoop::PlayerRound() {
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
 
-        if (GetAsyncKeyState(VK_UP) && console_display.yIndex != 0)
+        if (GetAsyncKeyState(VK_UP) && console_display.yIndex != 0 && console_display.xIndex + 1 <= EnemySlot.size())
         {
             console_display.yIndex -= 1;
             console_display.Reposition();
             console_display.RepositionCursor();
             Sleep(250);
         }
-        if (GetAsyncKeyState(VK_DOWN) && console_display.yIndex != 1)
+        if (GetAsyncKeyState(VK_DOWN) && console_display.yIndex != 1 && console_display.xIndex + 1 <= PlayerSlot.size())
         {
             console_display.yIndex += 1;
             console_display.Reposition();
@@ -188,7 +188,7 @@ bool GameLoop::PlayerRound() {
 
         if (console_display.yIndex == 0)
         {
-            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex < EnemySlot.size()-1)
+            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < EnemySlot.size())
             {
                 console_display.xIndex += 1;
                 console_display.Reposition();
@@ -206,7 +206,7 @@ bool GameLoop::PlayerRound() {
 
         if (console_display.yIndex == 1)
         {
-            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < PlayerSlot.size()-1)
+            if (GetAsyncKeyState(VK_RIGHT) && console_display.xIndex+1 < PlayerSlot.size())
             {
                 console_display.xIndex += 1;
                 console_display.Reposition();

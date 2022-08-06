@@ -121,6 +121,8 @@ void Display::AwaitArea()
 	console_color.Yellow("Select your unit first, then select an enemy to attack.");
 	console_control.CursorXY(xPosition, yPosition + 3);
 	console_color.Green("The amount of attack chances for each round increase based on how many member in the team.");
+	xIndex = 0;
+	yIndex = 2;
 }
 
 void Display::RepositionCursor()
