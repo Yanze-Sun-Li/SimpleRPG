@@ -483,7 +483,7 @@ void GameLoop::Shop() {
                     console_display.Clean();
                     console_display.DisplayShop();
                     console_display.DisplayGold(gold);
-                    PlayerAddAttack(10);
+                    PlayerAddAttack(5);
                 }
                 break;
             case 3:
@@ -493,7 +493,7 @@ void GameLoop::Shop() {
                     console_display.Clean();
                     console_display.DisplayShop();
                     console_display.DisplayGold(gold);
-                    PlayerAddDefend(10);
+                    PlayerAddDefend(3);
                 }
                 break;
             }
