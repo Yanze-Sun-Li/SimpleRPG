@@ -54,12 +54,12 @@ void GameLoop::Start()
         gold += 300;
         Shop();
     } 
-    if (battleResult == -1) {
+    if (battleResult == 1) {
         LoadLevelEnemySlot(leveManager.Level_Two);
         gold += 1000;
         Shop();
     }
-    if (battleResult == -1) {
+    if (battleResult == 1) {
         LoadLevelEnemySlot(leveManager.Level_Three);
     }
 
@@ -69,6 +69,7 @@ void GameLoop::Start()
 
     }
     battleResult = -1;
+    
 
     int i;
     std::cin >> i;
@@ -352,10 +353,21 @@ void GameLoop::GameEnd()
     for (int i = 0; i < DeadPlayerSlot.size(); i++)
     {
         free(DeadPlayerSlot[i]);
-
-        DeadEnemySlot.clear();
-        DeadPlayerSlot.clear();
     }
+    for (int i = 0; i < EnemySlot.size(); i++)
+    {
+        free(EnemySlot[i]);
+    }
+    for (int i = 0; i < PlayerSlot.size(); i++)
+    {
+        free(PlayerSlot[i]);
+    }
+
+
+    EnemySlot.clear();
+    PlayerSlot.clear();
+    DeadEnemySlot.clear();
+    DeadPlayerSlot.clear();
 }
 
 int GameLoop::PlayerAliveNumber()
@@ -435,17 +447,17 @@ void GameLoop::Shop() {
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
 
-        if (GetAsyncKeyState(VK_UP) && shopY > 0)
+        if (GetAsyncKeyState(VK_UP) && shopY > 1)
         {
             shopY -= 1;
-            console_display.xPosition--;
+            console_display.yPosition--;
             console_display.RepositionCursor();
             Sleep(250);
         }
-        if (GetAsyncKeyState(VK_DOWN) && shopY <2)
+        if (GetAsyncKeyState(VK_DOWN) && shopY <3)
         {
             shopY += 1;
-            console_display.xPosition--;
+            console_display.yPosition++;
             console_display.RepositionCursor();
             Sleep(250);
         }
@@ -453,29 +465,63 @@ void GameLoop::Shop() {
         if (GetAsyncKeyState(0x43))
         {
             Sleep(250);
-            if (gold >= 100) {
-                gold -= 100;
-                console_display.Clean();
-                console_display.DisplayShop();
-                console_display.DisplayGold(gold);
-            }
-
 
             switch (shopY)
             {
-            case0:
+            case 1:
+                if (gold >= 100) {
+                    shopY = 4;
+                    gold -= 100;
+                    console_display.Clean();
+                    console_display.DisplayShop();
+                    console_display.DisplayGold(gold);
+                    PlayerHealing();
+                }
                 break;
-            case1:
+            case 2:
+                if (gold >= 100) {
+                    shopY = 4;
+                    gold -= 100;
+                    console_display.Clean();
+                    console_display.DisplayShop();
+                    console_display.DisplayGold(gold);
+                    PlayerAddAttack(10);
+                }
                 break;
-            case2:
-                break;
-
-            default:
+            case 3:
+                if (gold >= 100) {
+                    shopY = 4;
+                    gold -= 100;
+                    console_display.Clean();
+                    console_display.DisplayShop();
+                    console_display.DisplayGold(gold);
+                    PlayerAddDefend(10);
+                }
                 break;
             }
 
         }
     }
 
+}
 
+void GameLoop::PlayerAddAttack(int amount) {
+    for (int i = 0; i < PlayerSlot.size(); i++)
+    {
+        PlayerSlot[i]->attack += amount;
+    }
+}
+
+void GameLoop::PlayerAddDefend(int amount) {
+    for (int i = 0; i < PlayerSlot.size(); i++)
+    {
+        PlayerSlot[i]->defend += amount;
+    }
+}
+
+void GameLoop::PlayerHealing() {
+    for (int i = 0; i < PlayerSlot.size(); i++)
+    {
+        PlayerSlot[i]->current_health = PlayerSlot[i]->health;
+    }
 }

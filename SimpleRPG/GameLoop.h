@@ -59,5 +59,8 @@ private:
     void GameEnd();
     void LoadPlayer();
     void Shop();
+    void PlayerAddAttack(int amount);
+    void PlayerAddDefend(int amount);
+    void PlayerHealing();
 
 };
