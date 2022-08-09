@@ -11,6 +11,7 @@ public:
     std::string name;
     std::string description;
     int health;
+    int current_health;
     int attack;
     int defend;
     int dodge;

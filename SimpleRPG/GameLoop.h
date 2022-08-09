@@ -24,6 +24,7 @@ public:
 
 
 private:
+    int gold;
     int playerAttackChance = -1;
     int enemyAttackChance = -1;
     Random rand;
@@ -56,5 +57,7 @@ private:
     void RemoveDeadEnemy();
     void RemoveDeadPlayer();
     void GameEnd();
+    void LoadPlayer();
+    void Shop();
 
 };

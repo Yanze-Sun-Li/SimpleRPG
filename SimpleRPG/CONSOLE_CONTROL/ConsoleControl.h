@@ -21,6 +21,7 @@ public:
 	void Green(const char *text);
 	void Green(int text);
 	void Green(const char *text, int value);
+	void Green(const char* text, int value, const char* _text, int _value);
 	/// <summary>
 	/// Print text that have color LightBlue
 	/// </summary>

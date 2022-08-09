@@ -107,6 +107,8 @@ void Display::Re_DisplayAll(std::vector<GameObject*> PlayerSlot, std::vector<Gam
 	Clean();
 	xPosition = 10;
 	yPosition = yGap + yGap;
+	xIndex = 0;
+	yIndex = 2;
 	DisplayEnemy(EnemySlot);
 	DisplayPlayer(PlayerSlot);
 	AwaitArea();
@@ -158,6 +160,27 @@ void Display::RepositionPosition()
 void Display::Clean()
 {
 	system("cls");
+}
+
+void Display::DisplayShop()
+{
+	console_control.CursorXY(2, 1);
+	console_color.White("Healing (100g)");
+	console_control.CursorXY(2, 1 + 1);
+	console_color.White("Attack + 10 (100g)");
+	console_control.CursorXY(2, 1 + 2);
+	console_color.White("Defend + 10 (100g)");
+	console_control.CursorXY(2, 1 + 5);
+	console_color.Green("Arrow to Navigate, C to confirm, Esc to Leave.");
+	xPosition = 1;
+	yPosition = 4;
+	RepositionCursor();
+}
+
+void Display::DisplayGold(int gold)
+{
+	console_control.CursorXY(2, 1 + 3);
+	console_color.Yellow("Gold",gold);
 }
 
 void Display::ShowConsoleCursor(bool showFlag)

@@ -2,6 +2,7 @@
 
 GameLoop::GameLoop()
 {
+    gold = 0;
     leveManager = Level();
     rand = Random();
     battleResult = -1;
@@ -28,9 +29,9 @@ GameLoop::GameLoop()
     Enemy1 = new GameObject("Test1");
     Enemy2 = new GameObject("Test2");
     Enemy3 = new GameObject("Test3");
-    Player1 = new GameObject("Test4");
-    Player2 = new GameObject("Test5");
-    Player3 = new GameObject("Test6");
+    Player1 = new GameObject("Players", "Simple player character",250,25,25,1);
+    Player2 = new GameObject("Players", "Simple player character", 250, 25, 25, 1);
+    Player3 = new GameObject("Players", "Simple player character", 250, 25, 25, 1);
 
     EnemySlot.push_back(Enemy1);
     EnemySlot.push_back(Enemy2);
@@ -48,8 +49,25 @@ GameLoop::GameLoop()
 void GameLoop::Start()
 {
    
-    LoadLevelEnemySlot(leveManager.Level_One);
+    if (battleResult == -1) {
+        LoadLevelEnemySlot(leveManager.Level_One);
+        gold += 300;
+        Shop();
+    } 
+    if (battleResult == -1) {
+        LoadLevelEnemySlot(leveManager.Level_Two);
+        gold += 1000;
+        Shop();
+    }
+    if (battleResult == -1) {
+        LoadLevelEnemySlot(leveManager.Level_Three);
+    }
 
+    GameEnd();
+    if (battleResult == 1) {
+        std::cout << "You have successful beat this game!";
+
+    }
     battleResult = -1;
 
     int i;
@@ -73,8 +91,6 @@ void GameLoop::BattleScene()
         RemoveDeadEnemy();
         console_display.Re_DisplayAll(PlayerSlot, EnemySlot);
     }
-
-    GameEnd();
 
 }
 
@@ -166,6 +182,7 @@ void GameLoop::PlayerRound() {
     while (!GetAsyncKeyState(VK_ESCAPE) && playerAttackChance > 0)
     {
 
+
         if (GetAsyncKeyState(VK_UP) && console_display.yIndex != 0 && console_display.xIndex + 1 <= EnemySlot.size())
         {
             console_display.yIndex -= 1;
@@ -243,6 +260,7 @@ void GameLoop::PlayerRound() {
                 playerSelected = false;
                 if (IfEnemyAllDead()) {
                     battleResult = 1;
+                    break;
                 }
             }
         }
@@ -316,6 +334,7 @@ void GameLoop::RemoveDeadPlayer() {
         if (PlayerSlot[i]->IfDead())
         {
 
+            DeadPlayerSlot.push_back(PlayerSlot[i]);
             PlayerSlot.erase(PlayerSlot.begin() + PlayerSlot[i]->index);
             i--;
         }
@@ -386,6 +405,10 @@ void GameLoop::LoadLevelEnemySlot(std::list<std::vector<GameObject>> level) {
             break;
         case 0:
             std::cout << "Enemy have the victory!" << std::endl;
+            for (int i = 0; i < DeadEnemySlot.size(); i++)
+            {
+                free(DeadEnemySlot[i]);
+            }
             goto PlayerLose;
         case 1:
             continue;
@@ -397,6 +420,62 @@ PlayerLose:
     return;
 }
 
-//void GameLoop::LoadPlayer() {
-//
-//}
+void GameLoop::LoadPlayer() {
+
+}
+
+void GameLoop::Shop() {
+    
+    int shopY = 4;
+
+    console_display.Clean();
+    console_display.DisplayShop();
+    console_display.DisplayGold(gold);
+
+    while (!GetAsyncKeyState(VK_ESCAPE))
+    {
+
+        if (GetAsyncKeyState(VK_UP) && shopY > 0)
+        {
+            shopY -= 1;
+            console_display.xPosition--;
+            console_display.RepositionCursor();
+            Sleep(250);
+        }
+        if (GetAsyncKeyState(VK_DOWN) && shopY <2)
+        {
+            shopY += 1;
+            console_display.xPosition--;
+            console_display.RepositionCursor();
+            Sleep(250);
+        }
+
+        if (GetAsyncKeyState(0x43))
+        {
+            Sleep(250);
+            if (gold >= 100) {
+                gold -= 100;
+                console_display.Clean();
+                console_display.DisplayShop();
+                console_display.DisplayGold(gold);
+            }
+
+
+            switch (shopY)
+            {
+            case0:
+                break;
+            case1:
+                break;
+            case2:
+                break;
+
+            default:
+                break;
+            }
+
+        }
+    }
+
+
+}

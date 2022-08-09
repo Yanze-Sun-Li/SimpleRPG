@@ -43,6 +43,13 @@ void ColorControl::Green(const char *text, int value)
     cout << text << ": " << value << endl;
 }
 
+void ColorControl::Green(const char* text, int value, const char* _text, int _value)
+{
+    SetConsoleTextAttribute(
+        console_color, 10);
+    cout << text << ": " << value << _text << _value <<  endl;
+}
+
 void ColorControl::LightBlue(const char *text)
 {
     SetConsoleTextAttribute(

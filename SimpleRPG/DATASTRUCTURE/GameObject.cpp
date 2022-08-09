@@ -8,6 +8,7 @@ GameObject::GameObject(std::string _name, std::string _description, int _health,
     attack = _attack;
     defend = _defend;
     dodge = _dodge;
+    current_health = health;
 }
 GameObject::GameObject()
 {
@@ -17,6 +18,7 @@ GameObject::GameObject()
     attack = 0;
     defend = 0;
     dodge = 0;
+    current_health = health;
 }
 
 GameObject::GameObject(std::string _name)
@@ -27,6 +29,7 @@ GameObject::GameObject(std::string _name)
     attack = 5;
     defend = 1;
     dodge = 1;
+    current_health = health;
 }
 
 void GameObject::CopyGameObject(GameObject &target)
@@ -37,6 +40,7 @@ void GameObject::CopyGameObject(GameObject &target)
     attack = target.attack;
     defend = target.defend;
     dodge = target.dodge;
+    current_health = health;
 }
 
 GameObject::~GameObject()
@@ -54,7 +58,7 @@ void GameObject::TakeDamage(int _damage)
         _damage -= defend;
     }
 
-    health -= _damage;
+    current_health = health -= _damage;
 
 }
 
@@ -66,13 +70,13 @@ void GameObject::Attack(GameObject &target)
 
 bool GameObject::IfDead()
 {
-    return health <= 0 ? true : false;
+    return current_health <= 0 ? true : false;
 }
 
 void GameObject::State(ColorControl console_color)
 {
     console_color.White(name.c_str());
-    console_color.Green("Health", health);
+    console_color.Green("Health", current_health, "/", health);
     console_color.Red("Attack", attack);
     console_color.LightBlue("Defend", defend);
     console_color.Gray("Dodge", dodge);

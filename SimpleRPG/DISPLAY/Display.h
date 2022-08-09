@@ -26,6 +26,8 @@ public:
     void RepositionCursor();
     void RepositionPosition();
     void Clean();
+    void DisplayShop();
+    void DisplayGold(int gold);
     int xPosition;
     int yPosition;
     int xIndex;
