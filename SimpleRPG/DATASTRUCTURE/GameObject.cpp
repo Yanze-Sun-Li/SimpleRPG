@@ -58,7 +58,7 @@ void GameObject::TakeDamage(int _damage)
         _damage -= defend;
     }
 
-    current_health = health -= _damage;
+    current_health -= _damage;
 
 }
 

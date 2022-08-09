@@ -39,10 +39,11 @@ void Display::DisplayStateAtXY(int _x, int _y, GameObject &gameObject)
 	console_control.CursorXY(_x, _y + 1);
 	console_color.White(gameObject.description.c_str());
 	console_control.CursorXY(_x, _y + 2);
-	console_color.Green("Health", gameObject.health);
+	console_color.Green("Health", gameObject.current_health);
 	console_control.CursorXY(_x, _y + 3);
 	console_color.Red("Attack", gameObject.attack);
 	console_control.CursorXY(_x, _y + 4);
+
 	console_color.LightBlue("Defend", gameObject.defend);
 	console_control.CursorXY(_x, _y + 5);
 	console_color.Gray("Dodge", gameObject.dodge);
@@ -55,7 +56,7 @@ void Display::DisplayStateAtXY_Selected(int _x, int _y, GameObject &gameObject)
 	console_control.CursorXY(_x, _y + 1);
 	console_color.Green(gameObject.description.c_str());
 	console_control.CursorXY(_x, _y + 2);
-	console_color.Green("Health", gameObject.health);
+	console_color.Green("Health", gameObject.current_health);
 	console_control.CursorXY(_x, _y + 3);
 	console_color.Green("Attack", gameObject.attack);
 	console_control.CursorXY(_x, _y + 4);
@@ -71,7 +72,7 @@ void Display::DisplayStateAtXY_Dead(int _x, int _y, GameObject& gameObject)
 	console_control.CursorXY(_x, _y + 1);
 	console_color.DarkGray(gameObject.description.c_str());
 	console_control.CursorXY(_x, _y + 2);
-	console_color.DarkGray("Health", gameObject.health);
+	console_color.DarkGray("Health", gameObject.current_health);
 	console_control.CursorXY(_x, _y + 3);
 	console_color.DarkGray("Attack", gameObject.attack);
 	console_control.CursorXY(_x, _y + 4);

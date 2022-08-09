@@ -464,8 +464,6 @@ void GameLoop::Shop() {
 
         if (GetAsyncKeyState(0x43))
         {
-            Sleep(250);
-
             switch (shopY)
             {
             case 1:
@@ -499,7 +497,7 @@ void GameLoop::Shop() {
                 }
                 break;
             }
-
+            Sleep(250);
         }
     }
 
@@ -520,8 +518,8 @@ void GameLoop::PlayerAddDefend(int amount) {
 }
 
 void GameLoop::PlayerHealing() {
-    for (int i = 0; i < PlayerSlot.size(); i++)
+    for (GameObject* ob : PlayerSlot)
     {
-        PlayerSlot[i]->current_health = PlayerSlot[i]->health;
+        ob->current_health = ob->health;
     }
 }
