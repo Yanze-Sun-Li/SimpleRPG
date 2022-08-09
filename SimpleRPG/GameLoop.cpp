@@ -2,6 +2,7 @@
 
 GameLoop::GameLoop()
 {
+    leveManager = Level();
     rand = Random();
     battleResult = -1;
     xGap = 35;
@@ -17,28 +18,27 @@ GameLoop::GameLoop()
     selectedPlayerReference = nullptr;
     selectedEnemyReference = nullptr;
 
-    GameObject* test_1 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* test_2 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* test_3 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* test_4 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* test_5 = (GameObject*)malloc(sizeof(GameObject));
-    //GameObject* test_6 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Enemy1 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Enemy2 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Enemy3 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Player1 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Player2 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Player3 = (GameObject*)malloc(sizeof(GameObject));
 
-    
-    test_1 = new GameObject("Test1");
-    test_2 = new GameObject("Test2");
-    test_3 = new GameObject("Test3");
-    test_4 = new GameObject("Test4");
-    test_5 = new GameObject("Test5");
-    //test_6 = new GameObject("Test6");
+    Enemy1 = new GameObject("Test1");
+    Enemy2 = new GameObject("Test2");
+    Enemy3 = new GameObject("Test3");
+    Player1 = new GameObject("Test4");
+    Player2 = new GameObject("Test5");
+    Player3 = new GameObject("Test6");
 
-    EnemySlot.push_back(test_1);
-    EnemySlot.push_back(test_2);
-    EnemySlot.push_back(test_3);
+    EnemySlot.push_back(Enemy1);
+    EnemySlot.push_back(Enemy2);
+    EnemySlot.push_back(Enemy3);
 
-    PlayerSlot.push_back(test_4);
-    PlayerSlot.push_back(test_5);
-    //PlayerSlot.push_back(*test_6);
+    PlayerSlot.push_back(Player1);
+    PlayerSlot.push_back(Player2);
+    PlayerSlot.push_back(Player3);
 
 
     playerSelected = false;
@@ -48,21 +48,7 @@ GameLoop::GameLoop()
 void GameLoop::Start()
 {
    
-    BattleScene();
-    console_display.Clean();
-    switch (battleResult)
-    {
-    case -1:
-        std::cout << "Error"<<std::endl;
-        break;
-    case 0:
-        std::cout << "Enemy have the victory!" << std::endl;
-        break;
-    case 1:
-        std::cout << "Player have the victory!" << std::endl;
-    default:
-        break;
-    }
+    LoadLevelEnemySlot(leveManager.Level_One);
 
     battleResult = -1;
 
@@ -374,3 +360,43 @@ int GameLoop::EnemyAliveNumber()
     }
     return alive;
 }
+
+void GameLoop::LoadLevelEnemySlot(std::list<std::vector<GameObject>> level) {
+    EnemySlot.clear();
+    GameObject* Enemy1 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Enemy2 = (GameObject*)malloc(sizeof(GameObject));
+    GameObject* Enemy3 = (GameObject*)malloc(sizeof(GameObject));
+
+    for (std::vector<GameObject> team : level)
+    {
+        Enemy1 = &team[0];
+        Enemy2 = &team[1];
+        Enemy3 = &team[2];
+
+        EnemySlot.push_back(Enemy1);
+        EnemySlot.push_back(Enemy2);
+        EnemySlot.push_back(Enemy3);
+
+        BattleScene();
+        console_display.Clean();
+        switch (battleResult)
+        {
+        case -1:
+            std::cout << "Error" << std::endl;
+            break;
+        case 0:
+            std::cout << "Enemy have the victory!" << std::endl;
+            goto PlayerLose;
+        case 1:
+            continue;
+        default:
+            break;
+        }
+    }
+PlayerLose:
+    return;
+}
+
+//void GameLoop::LoadPlayer() {
+//
+//}

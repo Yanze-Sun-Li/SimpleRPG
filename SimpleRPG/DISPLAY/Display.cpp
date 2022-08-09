@@ -115,7 +115,7 @@ void Display::Re_DisplayAll(std::vector<GameObject*> PlayerSlot, std::vector<Gam
 void Display::AwaitArea()
 {
 	console_control.CursorXY(xPosition, yPosition);
-	console_color.White("Arrow Key to move, Space to select/de-select. C to confirm attack");
+	console_color.White("Arrow Key to move, Space to select/de-select. C to confirm attack, Esc to leave game.");
 	console_control.CursorXY(xPosition, yPosition + 1);
 	console_color.White("C to confirm attack");
 	console_control.CursorXY(xPosition, yPosition + 2);

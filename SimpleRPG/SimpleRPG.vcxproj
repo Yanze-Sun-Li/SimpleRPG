@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="CONSOLE_CONTROL\ConsoleControl.cpp" />
     <ClCompile Include="DATASTRUCTURE\GameObject.cpp" />
+    <ClCompile Include="RUNTIMEDATA\DATA_Player.cpp" />
+    <ClCompile Include="RUNTIMEDATA\Level.cpp" />
+    <ClCompile Include="RUNTIMEDATA\DATA_Enemy.cpp" />
     <ClCompile Include="DISPLAY\Display.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="main.cpp" />
@@ -29,6 +32,9 @@
   <ItemGroup>
     <ClInclude Include="CONSOLE_CONTROL\ConsoleControl.h" />
     <ClInclude Include="DATASTRUCTURE\GameObject.h" />
+    <ClInclude Include="RUNTIMEDATA\DATA_Player.h" />
+    <ClInclude Include="RUNTIMEDATA\Level.h" />
+    <ClInclude Include="RUNTIMEDATA\DATA_Enemy.h" />
     <ClInclude Include="DISPLAY\Display.h" />
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="FUNCTION\Random.h" />

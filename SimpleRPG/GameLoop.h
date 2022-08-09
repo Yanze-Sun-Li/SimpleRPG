@@ -5,6 +5,8 @@
 #include <queue>
 #include <Windows.h>
 #include "FUNCTION/Random.h"
+#include <list>
+#include "RUNTIMEDATA/Level.h"
 
 class GameLoop
 {
@@ -32,11 +34,16 @@ private:
     int xGap;
     int yGap;
     Display console_display;
+    Level leveManager;
+    
     std::vector<GameObject*> EnemySlot;
     std::vector<GameObject*> PlayerSlot;
     std::vector<GameObject*> DeadEnemySlot;
     std::vector<GameObject*> DeadPlayerSlot;
     std::vector<GameObject*> AlivePlayer;
+
+
+
     GameObject* selectedEnemyReference;
     GameObject* selectedPlayerReference;
     bool IfEnemyAllDead();
@@ -45,6 +52,7 @@ private:
     void EnemyRound();
     int PlayerAliveNumber();
     int EnemyAliveNumber();
+    void LoadLevelEnemySlot(std::list<std::vector<GameObject>> level);
     void RemoveDeadEnemy();
     void RemoveDeadPlayer();
     void GameEnd();
