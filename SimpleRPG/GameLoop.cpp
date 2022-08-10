@@ -4,6 +4,7 @@ GameLoop::GameLoop()
 {
     gold = 0;
     leveManager = Level();
+    playerData = DATA_Player();
     rand = Random();
     battleResult = -1;
     xGap = 35;
@@ -48,7 +49,8 @@ GameLoop::GameLoop()
 
 void GameLoop::Start()
 {
-   
+    LoadPlayer();
+
     if (battleResult == -1) {
         LoadLevelEnemySlot(leveManager.Level_One);
         gold += 300;
@@ -433,7 +435,98 @@ PlayerLose:
 }
 
 void GameLoop::LoadPlayer() {
+    int pickY = 4;
+    int players = 0;
+    GameObject* Player = (GameObject*)malloc(sizeof(GameObject));
+    for (GameObject* i : PlayerSlot)
+    {
+        free(i);
+    }
+    PlayerSlot.clear();
+    console_display.Clean();
+    console_display.DisplayPlayerPicker(PlayerSlot);
 
+    while (!GetAsyncKeyState(VK_ESCAPE))
+    {
+        if (players > 2)
+        {
+            while (!GetAsyncKeyState(VK_ESCAPE))
+            {
+                if (GetAsyncKeyState(0x43)) {
+                    Sleep(150);
+                    break;
+                }
+                if (GetAsyncKeyState(0x5A))
+                {
+                    Sleep(150);
+                    PlayerSlot.pop_back();
+                    pickY = 4;
+                    players--;
+                    goto ExitHere;
+                }
+            }
+            break;
+        ExitHere:
+            console_display.Clean();
+            console_display.DisplayPlayerPicker(PlayerSlot);
+        }
+
+
+        if (GetAsyncKeyState(VK_UP) && pickY > 1)
+        {
+            pickY -= 1;
+            console_display.yPosition--;
+            console_display.RepositionCursor();
+            Sleep(250);
+        }
+        if (GetAsyncKeyState(VK_DOWN) && pickY < 3)
+        {
+            pickY += 1;
+            console_display.yPosition++;
+            console_display.RepositionCursor();
+            Sleep(250);
+        }
+
+        if (PlayerSlot.size()>0)
+        {
+            if (GetAsyncKeyState(0x5A))
+            {
+                PlayerSlot.pop_back();
+                pickY = 4;
+                console_display.Clean();
+                console_display.DisplayPlayerPicker(PlayerSlot);
+                players--;
+                Sleep(150);
+            }
+        }
+
+        if (GetAsyncKeyState(0x43))
+        {
+            switch (pickY)
+            {
+            case 1:
+                Player = new GameObject(playerData.Swordsman);
+                PlayerSlot.push_back(Player);
+                players++;
+                Sleep(150);
+                break;
+            case 2:
+                Player = new GameObject(playerData.ShieldSoldier);
+                PlayerSlot.push_back(Player);
+                players++;
+                Sleep(150);
+                break;
+            case 3:
+                Player = new GameObject(playerData.Pikemen);
+                PlayerSlot.push_back(Player);
+                players++;
+                Sleep(150);
+                break;
+            }
+            pickY = 4;
+            console_display.DisplayPlayerPicker(PlayerSlot);
+        }
+    }
 }
 
 void GameLoop::Shop() {
@@ -468,35 +561,27 @@ void GameLoop::Shop() {
             {
             case 1:
                 if (gold >= 100) {
-                    shopY = 4;
                     gold -= 100;
-                    console_display.Clean();
-                    console_display.DisplayShop();
-                    console_display.DisplayGold(gold);
                     PlayerHealing();
                 }
                 break;
             case 2:
                 if (gold >= 100) {
-                    shopY = 4;
                     gold -= 100;
-                    console_display.Clean();
-                    console_display.DisplayShop();
-                    console_display.DisplayGold(gold);
                     PlayerAddAttack(5);
                 }
                 break;
             case 3:
                 if (gold >= 100) {
-                    shopY = 4;
                     gold -= 100;
-                    console_display.Clean();
-                    console_display.DisplayShop();
-                    console_display.DisplayGold(gold);
                     PlayerAddDefend(3);
                 }
                 break;
             }
+            shopY = 4;
+            console_display.Clean();
+            console_display.DisplayShop();
+            console_display.DisplayGold(gold);
             Sleep(250);
         }
     }

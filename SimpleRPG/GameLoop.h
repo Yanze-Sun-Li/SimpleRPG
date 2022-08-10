@@ -7,6 +7,7 @@
 #include "FUNCTION/Random.h"
 #include <list>
 #include "RUNTIMEDATA/Level.h"
+#include "RUNTIMEDATA/DATA_Player.h"
 
 class GameLoop
 {
@@ -36,6 +37,7 @@ private:
     int yGap;
     Display console_display;
     Level leveManager;
+    DATA_Player playerData;
     
     std::vector<GameObject*> EnemySlot;
     std::vector<GameObject*> PlayerSlot;

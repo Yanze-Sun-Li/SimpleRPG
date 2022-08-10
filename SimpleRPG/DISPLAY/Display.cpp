@@ -178,6 +178,27 @@ void Display::DisplayShop()
 	RepositionCursor();
 }
 
+void Display::DisplayPlayerPicker(std::vector<GameObject*> player_team)
+{
+	console_control.CursorXY(2, 1);
+	console_color.White("Swordsman (Average)");
+	console_control.CursorXY(2, 1 + 1);
+	console_color.White("Shield Soldier (Defender)");
+	console_control.CursorXY(2, 1 + 2);
+	console_color.White("Pikemen (Attacker)");
+	console_control.CursorXY(2, 1 + 5);
+	console_color.Green("Arrow to Navigate, C to confirm, Z to cancel last edit, Esc to Leave.");
+	console_control.CursorXY(2, 1 + 6);
+	console_color.Yellow("Current Team: ");
+	for (GameObject* player : player_team)
+	{
+		std::cout << player->name << " ";
+	}
+	xPosition = 1;
+	yPosition = 4;
+	RepositionCursor();
+}
+
 void Display::DisplayGold(int gold)
 {
 	console_control.CursorXY(2, 1 + 3);

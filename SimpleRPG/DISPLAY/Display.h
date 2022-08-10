@@ -27,6 +27,7 @@ public:
     void RepositionPosition();
     void Clean();
     void DisplayShop();
+    void DisplayPlayerPicker(std::vector<GameObject*> player_team);
     void DisplayGold(int gold);
     int xPosition;
     int yPosition;

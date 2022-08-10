@@ -2,7 +2,7 @@
 DATA_Player::DATA_Player()
 {
 	Swordsman = GameObject("Swordsman",
-		"Average level at attack and defend.",
+		"Average attack and defend.",
 		100,
 		20,
 		20,
