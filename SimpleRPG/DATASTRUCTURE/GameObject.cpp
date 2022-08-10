@@ -1,5 +1,6 @@
 #include "GameObject.h"
 
+
 GameObject::GameObject(std::string _name, std::string _description, int _health, int _attack, int _defend, int _dodge)
 {
     name = _name;
@@ -105,6 +106,7 @@ bool GameObject::IsSame(GameObject& _gameObject)
 {
     return name == _gameObject.name &&
         description == _gameObject.description &&
+        current_health == _gameObject.current_health &&
         health == _gameObject.health &&
         attack == _gameObject.attack &&
         defend == _gameObject.defend &&
@@ -113,10 +115,18 @@ bool GameObject::IsSame(GameObject& _gameObject)
 
 bool operator==(const GameObject& left, const GameObject& right)
 {
-    return left.name == right.name &&
+    return 
+        left.current_health == right.current_health &&
+        left.name == right.name &&
         left.description == right.description &&
         left.health == right.health &&
         left.attack == right.attack &&
         left.defend == right.defend &&
         left.dodge == right.dodge ? true : false;
+}
+
+
+void GameObject::restore()
+{
+    current_health = health;
 }

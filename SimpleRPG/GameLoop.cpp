@@ -20,28 +20,6 @@ GameLoop::GameLoop()
     selectedPlayerReference = nullptr;
     selectedEnemyReference = nullptr;
 
-    GameObject* Enemy1 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* Enemy2 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* Enemy3 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* Player1 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* Player2 = (GameObject*)malloc(sizeof(GameObject));
-    GameObject* Player3 = (GameObject*)malloc(sizeof(GameObject));
-
-    Enemy1 = new GameObject("Test1");
-    Enemy2 = new GameObject("Test2");
-    Enemy3 = new GameObject("Test3");
-    Player1 = new GameObject("Players", "Simple player character",250,25,25,1);
-    Player2 = new GameObject("Players", "Simple player character", 250, 25, 25, 1);
-    Player3 = new GameObject("Players", "Simple player character", 250, 25, 25, 1);
-
-    EnemySlot.push_back(Enemy1);
-    EnemySlot.push_back(Enemy2);
-    EnemySlot.push_back(Enemy3);
-
-    PlayerSlot.push_back(Player1);
-    PlayerSlot.push_back(Player2);
-    PlayerSlot.push_back(Player3);
-
 
     playerSelected = false;
     enemySelected = false;
@@ -51,17 +29,20 @@ void GameLoop::Start()
 {
     LoadPlayer();
 
+    gold += 1000;
+    Shop();
+
     if (battleResult == -1) {
         LoadLevelEnemySlot(leveManager.Level_One);
-        gold += 300;
-        Shop();
     } 
     if (battleResult == 1) {
-        LoadLevelEnemySlot(leveManager.Level_Two);
-        gold += 1000;
+        gold += 300;
         Shop();
+        LoadLevelEnemySlot(leveManager.Level_Two);
     }
     if (battleResult == 1) {
+        gold += 1000;
+        Shop();
         LoadLevelEnemySlot(leveManager.Level_Three);
     }
 
@@ -70,6 +51,7 @@ void GameLoop::Start()
         std::cout << "You have successful beat this game!";
 
     }
+
     battleResult = -1;
     
 
@@ -402,9 +384,9 @@ void GameLoop::LoadLevelEnemySlot(std::list<std::vector<GameObject>> level) {
 
     for (std::vector<GameObject> team : level)
     {
-        Enemy1 = &team[0];
-        Enemy2 = &team[1];
-        Enemy3 = &team[2];
+        Enemy1 = new GameObject(team[0]);
+        Enemy2 = new GameObject(team[1]);
+        Enemy3 = new GameObject(team[2]);
 
         EnemySlot.push_back(Enemy1);
         EnemySlot.push_back(Enemy2);
@@ -419,10 +401,6 @@ void GameLoop::LoadLevelEnemySlot(std::list<std::vector<GameObject>> level) {
             break;
         case 0:
             std::cout << "Enemy have the victory!" << std::endl;
-            for (int i = 0; i < DeadEnemySlot.size(); i++)
-            {
-                free(DeadEnemySlot[i]);
-            }
             goto PlayerLose;
         case 1:
             continue;
@@ -560,21 +538,21 @@ void GameLoop::Shop() {
             switch (shopY)
             {
             case 1:
-                if (gold >= 100) {
-                    gold -= 100;
+                if (gold >= 120) {
+                    gold -= 120;
                     PlayerHealing();
                 }
                 break;
             case 2:
-                if (gold >= 100) {
-                    gold -= 100;
-                    PlayerAddAttack(5);
+                if (gold >= 80) {
+                    gold -= 80;
+                    PlayerAddAttack(10);
                 }
                 break;
             case 3:
                 if (gold >= 100) {
                     gold -= 100;
-                    PlayerAddDefend(3);
+                    PlayerAddDefend(5);
                 }
                 break;
             }
@@ -585,26 +563,26 @@ void GameLoop::Shop() {
             Sleep(250);
         }
     }
-
+    Sleep(350);
 }
 
 void GameLoop::PlayerAddAttack(int amount) {
-    for (int i = 0; i < PlayerSlot.size(); i++)
+    for (GameObject* ob : PlayerSlot)
     {
-        PlayerSlot[i]->attack += amount;
+        ob->attack += amount;
     }
 }
 
 void GameLoop::PlayerAddDefend(int amount) {
-    for (int i = 0; i < PlayerSlot.size(); i++)
+    for (GameObject* ob : PlayerSlot)
     {
-        PlayerSlot[i]->defend += amount;
+        ob->defend += amount;
     }
 }
 
 void GameLoop::PlayerHealing() {
     for (GameObject* ob : PlayerSlot)
     {
-        ob->current_health = ob->health;
+        ob->restore();
     }
 }

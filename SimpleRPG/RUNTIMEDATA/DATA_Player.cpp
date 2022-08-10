@@ -3,21 +3,21 @@ DATA_Player::DATA_Player()
 {
 	Swordsman = GameObject("Swordsman",
 		"Average attack and defend.",
-		100,
-		20,
-		20,
+		25,
+		15,
+		8,
 		1);
 	ShieldSoldier = GameObject("ShieldSoldier",
 		"Great at defend.",
-		120,
-		12,
-		28,
+		40,
+		8,
+		8,
 		3);
 	Pikemen = GameObject("Pikemen",
 		"Great at defend.",
-		80,
-		28,
-		12,
+		15,
+		17,
+		3,
 		5);
 }
 

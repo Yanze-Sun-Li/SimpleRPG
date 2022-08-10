@@ -5,6 +5,7 @@
 class GameObject
 {
 public:
+    
     int index;
     int x_position;
     int y_position;
@@ -45,6 +46,7 @@ public:
     /// Description of the GameObject
     /// </summary>
     void FullDescription(ColorControl console_color);
+    void restore();
     bool IsEmpty();
     bool IsSame(GameObject& _gameObject);
     friend bool operator==(const GameObject& left, const GameObject& right);

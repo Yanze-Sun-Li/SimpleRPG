@@ -166,11 +166,11 @@ void Display::Clean()
 void Display::DisplayShop()
 {
 	console_control.CursorXY(2, 1);
-	console_color.White("Healing (100g)");
+	console_color.White("Healing (120g)");
 	console_control.CursorXY(2, 1 + 1);
-	console_color.White("Attack + 5 (100g)");
+	console_color.White("Attack + 10 (80g)");
 	console_control.CursorXY(2, 1 + 2);
-	console_color.White("Defend + 3 (100g)");
+	console_color.White("Defend + 5 (100g)");
 	console_control.CursorXY(2, 1 + 5);
 	console_color.Green("Arrow to Navigate, C to confirm, Esc to Leave.");
 	xPosition = 1;
