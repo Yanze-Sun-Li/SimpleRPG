@@ -46,6 +46,9 @@ public:
     /// Description of the GameObject
     /// </summary>
     void FullDescription(ColorControl console_color);
+    /// <summary>
+    /// Restore health to the maximum health
+    /// </summary>
     void restore();
     bool IsEmpty();
     bool IsSame(GameObject& _gameObject);
